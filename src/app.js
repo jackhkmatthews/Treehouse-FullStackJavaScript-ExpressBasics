@@ -5,8 +5,11 @@ var posts = require('./mock/posts.json');
 
 var app = express();
 
+app.set('view engine', 'pug');
+app.set('views', __dirname + '/templates')
+
 app.get('/', function(req, res){
-  res.send("<h1>I'm in love with Treehouse!</h1>");
+  res.render('index.pug');
 });
 
 app.get('/blog/:title?', function(req, res){
@@ -15,8 +18,8 @@ app.get('/blog/:title?', function(req, res){
     res.status(503);
     res.send("this page is under construction");
   } else {
-  var post = posts[title];
-  res.send(post);
+  var post = posts[title] || {};
+  res.render('post', {post:post});
   }
 });
 
